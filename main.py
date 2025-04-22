@@ -10,6 +10,22 @@ def hello_world():
 def batch_staging():
     return render_template('batch.html')
 
-@app.route('/batchedit', methods=["GET", "POST"])
+@app.route('/batchedit', methods=["POST"])
 def batch_accept():
+    return redirect("/")
+
+@app.route('/report')
+def circulation_staging():
+    return render_template('report.html')
+
+@app.route('/report', methods=["POST"])
+def circulation_accept():
+    return redirect("/")
+
+@app.route('/barcodes')
+def barcode_staging():
+    return render_template('barcodes.html')
+
+@app.route('/barcodes', methods=["POST"])
+def barcode_accept():
     return redirect("/")

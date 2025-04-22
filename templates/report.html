@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <a href="/"><- back</a>
+    <form method="post">
+        <label for="subtarget">What sublocation of books should be audited, or "any" for any (not case sensitive), or leave blank for only books without a sublocation:</label>
+        <input id="subtarget" name="subtarget" type="text">
+        <br>
+        <label for="start">The first (lowest) Dewey Decimal # to be audited: (leave blank for all)</label>
+        <input id="start" name="start" type="number">
+        <br>
+        <label for="end">The last (highest) Dewey Decimal # to be audited: (leave blank for all)</label>
+        <input id="end" name="end" type="number">
+        <br>
+        <label for="circstart">The first date to look at for circulation data: (levae blank for all)</label>
+        <input id="circstart" name="circstart" type="date">
+        <br>
+        <label for="circend">The last date to look at for circulation data: (leave blank for all)</label>
+        <input id="circend" name="circend" type="date">
+        <br>
+        <label for="mincircs">The minimum number of circulations required for something to be displayed: </label>
+        <input id="mincircs" name="mincircs" type="number" value="0">
+        <br>
+        <label for="maxcircs">The highest amount of circulations that displayed books will have: (leave blank for no limit)</label>
+        <input id="maxcircs" name="maxcircs" type="number">
+        <br>
+        <label for="clientid">The "client ID" token, one of the API tokens generated:</label>
+        <input type="password" id="clientid" name="clientid" required>
+        <br>
+        <label for="secret">The "client secret" token, one of the API tokens generated:</label>
+        <input type="password" id="secret" name="secret" required>
+        <br>
+        <input type="submit">
+    </form>
+</body>

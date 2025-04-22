@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<body>
+    <a href="/"><- back</a>
+    <form method="post">
+        <label for="start">The minimum barcode number:</label>
+        <input id="start" name="start" type="number" value="0" required>
+        <br>
+        <label for="end">The maximum barcode number:</label>
+        <input id="end" name="end" type="number" required>
+        <br>
+        <label for="count">The number of barcode numbers to find: (leave blank for all, or for longest range in continuous mode)</label>
+        <input id="count" name="count" type="number">
+        <br>
+        <label for="mode">Choose mode:</label>
+        <select id="mode" name="mode">
+            <option value="rangeunused">Continuous unused numbers</option>
+            <option value="anyunused">Any unused numbers</option>
+            <option value="rangeused">Continuous used numbers</option>
+            <option value="anyused">Any used numbers</option>
+        </select>
+        <br>
+        <label for="clientid">The "client ID" token, one of the API tokens generated:</label>
+        <input type="password" id="clientid" name="clientid" required>
+        <br>
+        <label for="secret">The "client secret" token, one of the API tokens generated:</label>
+        <input type="password" id="secret" name="secret" required>
+        <br>
+        <input type="submit">
+    </form>
+</body>
