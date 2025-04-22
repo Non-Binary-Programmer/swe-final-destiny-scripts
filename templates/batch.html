@@ -3,8 +3,31 @@
 
 </head>
 <body>
-    <form>
-        <label for="sublocation">What sublocation of books should be edited, or "any" for any (not case sensitive), or leave blank for only books without a sublocation:</label>
-        <input id="sublocation" name="sublocation" type="text">
+    <form method="post">
+        <label for="subtarget">What sublocation of books should be edited, or "any" for any (not case sensitive), or leave blank for only books without a sublocation:</label>
+        <input id="subtarget" name="subtarget" type="text">
+        <br>
+        <label for="start">The first (lowest) Dewey Decimal # to be edited: (leave blank for all)</label>
+        <input id="start" name="start" type="number">
+        <br>
+        <label for="end">The last (highest) Dewey Decimal # to be edited: (leave blank for all)</label>
+        <input id="end" name="end" type="number">
+        <br>
+        <label for="newsublocation">What sublocation should the books end up in, or leave blank for no sublocation:</label>
+        <input type="text" id="subtarget" name="subtarget">
+        <br>
+        <label for="oldcall">The current call # format of the books, with # representing the Dewey Decimal # (if present) and @ representing the three letters (usually author's last name)</label>
+        <input type="text" id="oldcall" name="oldcall">
+        <br>
+        <label for="newcall">The desired call # format, with # representing the Dewey Decimal # (if present) and @ representing the three letters (usually author's last name)</label>
+        <input type="text" id="newcall" name="newcall">
+        <br>
+        <label for="clientid">The "client ID" token, one of the API tokens generated.</label>
+        <input type="password" id="clientid" name="clientid">
+        <br>
+        <label for="secret">The "client secret" token, one of the API tokens generated.</label>
+        <input type="password" id="secret" name="secret">
+        <br>
+        <input type="submit">
     </form>
 </body>
