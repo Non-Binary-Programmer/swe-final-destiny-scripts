@@ -17,16 +17,14 @@
         <label for="mode">Choose mode:</label>
         <select id="mode" name="mode">
             <option value="rangeunused">Continuous unused numbers</option>
-            <option value="anyunused">Any unused numbers</option>
+            <option value="anyunused">Any unused numbers</option> <!--
             <option value="rangeused">Continuous used numbers</option>
-            <option value="anyused">Any used numbers</option>
+            <option value="anyused">Any used numbers</option> -->
         </select>
         <br>
-        <label for="clientid">The "client ID" token, one of the API tokens generated:</label>
-        <input type="password" id="clientid" name="clientid" required>
+        <label for="report">Copy-paste all contents of the 'barcode list' report, using command-a (or ctrl-a on windows) to select all text:</label>
         <br>
-        <label for="secret">The "client secret" token, one of the API tokens generated:</label>
-        <input type="password" id="secret" name="secret" required>
+        <textarea id="report" name="report" rows="4" cols="50"></textarea>
         <br>
         <input type="submit">
     </form>
