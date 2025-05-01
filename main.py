@@ -41,7 +41,11 @@ def barcode_accept():
     reportString = request.form.get("report")
     isUsed = reportString.split()[0] == "Used"
     availableNums = list()
-    requiredNumbers = int(request.form.get("count", default=maxsize))
+    requiredNumbers = request.form.get("count", default=maxsize)
+    if requiredNumbers == "":
+        requiredNumbers = maxsize
+    else:
+        requiredNumbers = int(requiredNumbers)
     if isUsed:
         availableNums.extend(range(int(request.form.get('start')), int(request.form.get('end'))))
     for string in reportString.split('\n'):
@@ -55,7 +59,7 @@ def barcode_accept():
                 if (len(availableNums) > requiredNumbers):
                     break
         else:
-            valueRange = range(int(string.split()[1]), int(string.split()[4]))
+            valueRange = range(int(string.split()[1]), int(string.split()[4]) + 1)
             if isUsed:
                 for i in valueRange:
                     availableNums.remove(i)
@@ -65,5 +69,14 @@ def barcode_accept():
                     break
     if (len(availableNums) > requiredNumbers):
         availableNums = availableNums[:requiredNumbers]
-    print(availableNums)
+    wb = xlsxwriter.Workbook('temp/result.xlsx')
+    worksheet = wb.add_worksheet("Copy Barcode Labels")
+    worksheet.freeze_panes(1,0)
+    bold = wb.add_format({'bold': True})
+    worksheet.write(0, 0, "Barcode", bold)
+    row = 1
+    for i in availableNums:
+        worksheet.write(row, 0, 'T ' + str(i))
+        row += 1
+    wb.close()
     return redirect("/")
