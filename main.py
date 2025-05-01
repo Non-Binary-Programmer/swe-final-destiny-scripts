@@ -1,9 +1,10 @@
 from sys import maxsize
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, send_file
 import requests
 import xlsxwriter
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 if (__name__ == "__main__"):
     wb = xlsxwriter.Workbook("hello.xlsx")
@@ -30,6 +31,8 @@ def circulation_staging():
 
 @app.route('/report', methods=["POST"])
 def circulation_accept():
+    reportString = request.form.get("report")
+    books = {}
     return redirect("/")
 
 @app.route('/barcodes')
@@ -53,7 +56,8 @@ def barcode_accept():
             continue
         if string.find('-') == -1:
             if isUsed:
-                availableNums.remove(int(string.split()[1]))
+                if (int(string.split()[1]) in availableNums):
+                    availableNums.remove(int(string.split()[1]))
             else:
                 availableNums.append(int(string.split()[1]))
                 if (len(availableNums) > requiredNumbers):
@@ -62,7 +66,8 @@ def barcode_accept():
             valueRange = range(int(string.split()[1]), int(string.split()[4]) + 1)
             if isUsed:
                 for i in valueRange:
-                    availableNums.remove(i)
+                    if (i in availableNums):
+                        availableNums.remove(i)
             else:
                 availableNums.extend(valueRange)
                 if (len(availableNums) > requiredNumbers):
@@ -79,4 +84,4 @@ def barcode_accept():
         worksheet.write(row, 0, 'T ' + str(i))
         row += 1
     wb.close()
-    return redirect("/")
+    return send_file('temp/result.xlsx')
