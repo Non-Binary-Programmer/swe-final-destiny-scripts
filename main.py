@@ -1,13 +1,13 @@
 from sys import maxsize
 from flask import Flask, render_template, redirect, request, send_file
-import requests
-import xlsxwriter
+from xlsxwriter import Workbook
+from pandas import read_excel
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 if (__name__ == "__main__"):
-    wb = xlsxwriter.Workbook("hello.xlsx")
+    wb = Workbook("hello.xlsx")
     sheet = wb.add_worksheet()
     for i in range(0, 5):
         sheet.write(i, 0, i)
@@ -31,8 +31,12 @@ def circulation_staging():
 
 @app.route('/report', methods=["POST"])
 def circulation_accept():
-    reportString = request.form.get("report")
-    books = {}
+    report = request.form.get("report")
+    mincircs = int(request.form.get("mincircs"))
+    maxcircs = int(request.form.get("maxcircs"))
+    lostbooks = request.form.get("lostbooks")
+    data = read_excel(report, usecols="A:J")
+    data.groupby("")
     return redirect("/")
 
 @app.route('/barcodes')
@@ -74,11 +78,11 @@ def barcode_accept():
                     break
     if (len(availableNums) > requiredNumbers):
         availableNums = availableNums[:requiredNumbers]
-    wb = xlsxwriter.Workbook('temp/result.xlsx')
+    wb = Workbook('temp/result.xlsx')
     worksheet = wb.add_worksheet("Copy Barcode Labels")
     worksheet.freeze_panes(1,0)
     bold = wb.add_format({'bold': True})
-    worksheet.write(0, 0, "Barcode", bold)
+    worksheet.write(0, 0, "BarcodeNumber", bold)
     row = 1
     for i in availableNums:
         worksheet.write(row, 0, 'T ' + str(i))
