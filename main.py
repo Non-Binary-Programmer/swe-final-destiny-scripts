@@ -31,13 +31,18 @@ def circulation_staging():
 
 @app.route('/report', methods=["POST"])
 def circulation_accept():
-    report = request.form.get("report")
+    report = request.files["report"]
     mincircs = int(request.form.get("mincircs"))
     maxcircs = int(request.form.get("maxcircs"))
     lostbooks = request.form.get("lostbooks")
-    data = read_excel(report, usecols="A:J")
-    data.groupby("")
-    return redirect("/")
+    data = read_excel(report, usecols="A:J", sheet_name=0)
+    filtered = data[mincircs <= data["Circs"]]
+    filtered = filtered[filtered["Circs"] <= maxcircs]
+    if lostbooks == "excluded":
+        filtered = filtered[filtered["Status"] != "Lost"]
+    elif lostbooks == "only":
+        filtered = filtered[filtered["Status"] == "Lost"]
+    return filtered.to_html()
 
 @app.route('/barcodes')
 def barcode_staging():
@@ -78,7 +83,7 @@ def barcode_accept():
                     break
     if (len(availableNums) > requiredNumbers):
         availableNums = availableNums[:requiredNumbers]
-    wb = Workbook('temp/result.xlsx')
+    wb = Workbook('/tmp/barcodes.xlsx')
     worksheet = wb.add_worksheet("Copy Barcode Labels")
     worksheet.freeze_panes(1,0)
     bold = wb.add_format({'bold': True})
@@ -88,4 +93,4 @@ def barcode_accept():
         worksheet.write(row, 0, 'T ' + str(i))
         row += 1
     wb.close()
-    return send_file('temp/result.xlsx')
+    return send_file('/tmp/barcodes.xlsx')

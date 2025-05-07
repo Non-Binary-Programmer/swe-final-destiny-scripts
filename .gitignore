@@ -177,3 +177,5 @@ secrets/
 destiny form 1.txt
 destiny form 2.txt
 temp/*
+tmp/*
+!tmp/result.xlsx

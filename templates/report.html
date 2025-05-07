@@ -4,7 +4,7 @@
 </head>
 <body>
     <a href="/"><- back</a>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <label for="mincircs">The minimum number of circulations required for something to be displayed: </label>
         <input id="mincircs" name="mincircs" type="number" value="0">
         <br>
@@ -20,7 +20,7 @@
         <br>
         <label for="report">Upload the results of the 'shelf list' report, set to export to Excel</label>
         <br>
-        <input id="report" name="report" type="file">
+        <input id="report" name="report" type="file" required>
         <br>
         <input type="submit">
     </form>
