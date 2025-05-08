@@ -5,11 +5,11 @@
 <body>
     <a href="/"><- back</a>
     <form method="post" enctype="multipart/form-data">
-        <label for="mincircs">The minimum number of circulations required for something to be displayed: </label>
+        <label for="mincircs">Display books with </label>
         <input id="mincircs" name="mincircs" type="number" value="0">
-        <br>
-        <label for="maxcircs">The highest amount of circulations that displayed books will have: (leave blank for no limit)</label>
+        <label for="maxcircs"> to </label>
         <input id="maxcircs" name="maxcircs" type="number">
+        circulations.
         <br>
         <label for="lostbooks">Books marked lost should be: </label>
         <select id="lostbooks" name="lostbooks" required>
@@ -17,8 +17,28 @@
             <option value="excluded">excluded</option>
             <option value="only">the only books present</option>
         </select>
+        .
         <br>
-        <label for="report">Upload the results of the 'shelf list' report, set to export to Excel</label>
+        <label for="mindate">Show books acquired between</label>
+        <input id="mindate" name="mindate" type="date">
+        <label for="maxdate">and</label>
+        <input id="maxdate" name="maxdate" type="date"> 
+        <label for="sort">Sort by: </label>
+        <select id="sort" name="sort" required>
+            <option value="Call Number">Call #</option>
+            <option value="Author">Author</option>
+            <option value="Title">Title</option>
+            <option value="Year">Year published (only works if Destiny is set to show year published)</option>
+            <option value="Date Acquired">Date acquired</option>
+            <option value="Circs">Number of circulations</option>
+        </select>
+        <select id="sortOrder" name="sortOrder" required>
+            <option value="ascending">Ascending</option>
+            <option value="descending">Descending</option>
+        </select>
+        .
+        <br>
+        <label for="report">Upload an Excel file with the results of the 'shelf list' report</label>
         <br>
         <input id="report" name="report" type="file" required>
         <br>

@@ -33,16 +33,22 @@ def circulation_staging():
 def circulation_accept():
     report = request.files["report"]
     mincircs = int(request.form.get("mincircs"))
-    maxcircs = int(request.form.get("maxcircs"))
+    maxcircs = request.form.get("maxcircs")
     lostbooks = request.form.get("lostbooks")
-    data = read_excel(report, usecols="A:J", sheet_name=0)
+    data = read_excel(report, sheet_name=0)
+    sort = request.form.get("sort")
+    sortOrder = request.form.get("sortOrder")
     filtered = data[mincircs <= data["Circs"]]
-    filtered = filtered[filtered["Circs"] <= maxcircs]
+    try:
+        filtered = filtered[filtered["Circs"] <= int(maxcircs)]
+    except ValueError:
+        pass
     if lostbooks == "excluded":
         filtered = filtered[filtered["Status"] != "Lost"]
     elif lostbooks == "only":
         filtered = filtered[filtered["Status"] == "Lost"]
-    return filtered.to_html()
+    filtered.sort_values(by=sort, inplace=True, ascending=(sortOrder == "ascending"))
+    return filtered.to_html(index=False)
 
 @app.route('/barcodes')
 def barcode_staging():
