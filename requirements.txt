@@ -2,3 +2,4 @@ flask
 xlsxwriter
 pandas
 openpyxl
+numpy

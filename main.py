@@ -2,6 +2,7 @@ from sys import maxsize
 from flask import Flask, render_template, redirect, request, send_file
 from xlsxwriter import Workbook
 from pandas import read_excel
+from numpy import datetime64, isnat
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
@@ -38,11 +39,17 @@ def circulation_accept():
     data = read_excel(report, sheet_name=0)
     sort = request.form.get("sort")
     sortOrder = request.form.get("sortOrder")
+    mindate = (request.form.get("mindate"))
+    maxdate = (request.form.get("maxdate"))
     filtered = data[mincircs <= data["Circs"]]
     try:
         filtered = filtered[filtered["Circs"] <= int(maxcircs)]
     except ValueError:
         pass
+    if not isnat(datetime64(mindate)):
+        filtered = filtered[filtered["Date Acquired"].astype('datetime64[ns]') >= datetime64(mindate)]
+    if not isnat(datetime64(maxdate)):
+        filtered = filtered[filtered["Date Acquired"].astype('datetime64[ns]') <= datetime64(maxdate)]
     if lostbooks == "excluded":
         filtered = filtered[filtered["Status"] != "Lost"]
     elif lostbooks == "only":
