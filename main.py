@@ -38,7 +38,9 @@ def circulation_accept():
     lostbooks = request.form.get("lostbooks")
     data = read_excel(report, sheet_name=0)
     sort = request.form.get("sort")
+    secondSort = request.form.get("secondSort")
     sortOrder = request.form.get("sortOrder")
+    secondSortOrder = request.form.get("secondSortOrder")
     mindate = (request.form.get("mindate"))
     maxdate = (request.form.get("maxdate"))
     filtered = data[mincircs <= data["Circs"]]
@@ -46,15 +48,19 @@ def circulation_accept():
         filtered = filtered[filtered["Circs"] <= int(maxcircs)]
     except ValueError:
         pass
-    if not isnat(datetime64(mindate)):
-        filtered = filtered[filtered["Date Acquired"].astype('datetime64[ns]') >= datetime64(mindate)]
-    if not isnat(datetime64(maxdate)):
-        filtered = filtered[filtered["Date Acquired"].astype('datetime64[ns]') <= datetime64(maxdate)]
+    try:
+        filtered = filtered[filtered["Year"] >= int(mindate)]
+    except ValueError:
+        pass
+    try:
+        filtered = filtered[filtered["Year"] <= int(maxdate)]
+    except ValueError:
+        pass
     if lostbooks == "excluded":
         filtered = filtered[filtered["Status"] != "Lost"]
     elif lostbooks == "only":
         filtered = filtered[filtered["Status"] == "Lost"]
-    filtered.sort_values(by=sort, inplace=True, ascending=(sortOrder == "ascending"))
+    filtered.sort_values(by=[sort, secondSort], inplace=True, ascending=[sortOrder == "ascending", secondSortOrder == "ascending"])
     return filtered.to_html(index=False)
 
 @app.route('/barcodes')

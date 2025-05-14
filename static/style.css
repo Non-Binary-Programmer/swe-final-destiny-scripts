@@ -1,0 +1,9 @@
+@font-face {
+    font-family: Bobby Jones Soft;
+    src: url(font.otf);
+}
+
+body {
+    font-family: Bobby Jones Soft;
+    background-color: #d07360;
+}
