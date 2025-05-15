@@ -61,7 +61,7 @@ def circulation_accept():
     elif lostbooks == "only":
         filtered = filtered[filtered["Status"] == "Lost"]
     filtered.sort_values(by=[sort, secondSort], inplace=True, ascending=[sortOrder == "ascending", secondSortOrder == "ascending"])
-    return filtered.to_html(index=False)
+    return render_template("report template.html", table=filtered.to_html(index=False)) 
 
 @app.route('/barcodes')
 def barcode_staging():
