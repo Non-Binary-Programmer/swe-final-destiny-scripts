@@ -1,7 +1,7 @@
 from sys import maxsize
 from flask import Flask, render_template, redirect, request, send_file
 from xlsxwriter import Workbook
-from pandas import read_excel
+from pandas import read_excel, concat
 from numpy import datetime64, isnat
 
 app = Flask(__name__)
@@ -33,16 +33,22 @@ def circulation_staging():
 @app.route('/report', methods=["POST"])
 def circulation_accept():
     report = request.files["report"]
+    secondReport = request.files["secondReport"]
     mincircs = int(request.form.get("mincircs"))
     maxcircs = request.form.get("maxcircs")
     lostbooks = request.form.get("lostbooks")
     data = read_excel(report, sheet_name=0)
+    moreData = read_excel(secondReport, sheet_name=0)["Circs"]
     sort = request.form.get("sort")
     secondSort = request.form.get("secondSort")
     sortOrder = request.form.get("sortOrder")
     secondSortOrder = request.form.get("secondSortOrder")
     mindate = (request.form.get("mindate"))
     maxdate = (request.form.get("maxdate"))
+    title = (request.form.get("title"))
+
+    concat([data, moreData], axis='columns')
+
     filtered = data[mincircs <= data["Circs"]]
     try:
         filtered = filtered[filtered["Circs"] <= int(maxcircs)]
@@ -61,7 +67,7 @@ def circulation_accept():
     elif lostbooks == "only":
         filtered = filtered[filtered["Status"] == "Lost"]
     filtered.sort_values(by=[sort, secondSort], inplace=True, ascending=[sortOrder == "ascending", secondSortOrder == "ascending"])
-    return render_template("report template.html", table=filtered.to_html(index=False)) 
+    return render_template("report template.html", table=filtered.to_html(index=False), title=title) 
 
 @app.route('/barcodes')
 def barcode_staging():

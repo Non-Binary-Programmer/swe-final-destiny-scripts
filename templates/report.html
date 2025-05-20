@@ -10,6 +10,8 @@
     <br>
     
     <form method="post" enctype="multipart/form-data">
+        <label for="title">Report title: </label>
+        <input id="title" name="title" type="text"> <br>
         <label for="mincircs">Display books with </label>
         <input id="mincircs" name="mincircs" type="number" value="0">
         <label for="maxcircs"> to </label>
@@ -55,13 +57,15 @@
         <select id="secondSortOrder" name="secondSortOrder" required>
             <option value="ascending">Ascending</option>
             <option value="descending">Descending</option>
-        </select>
-        
-        .
+        </select>.
         <br>
         <label for="report">Upload an Excel file with the results of the 'shelf list' report</label>
-        <br>
+
         <input id="report" name="report" type="file" required>
+        <br>
+        <label for="secondReport">Upload an Excel file with the same settings but a different circulation time range</label>
+
+        <input id="secondReport" name="secondReport" type="file">
         <br>
         <input type="submit">
     </form>
