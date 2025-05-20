@@ -1,7 +1,7 @@
 from sys import maxsize
 from flask import Flask, render_template, redirect, request, send_file
 from xlsxwriter import Workbook
-from pandas import read_excel, concat
+import pandas as pd
 from numpy import datetime64, isnat
 
 app = Flask(__name__)
@@ -37,8 +37,8 @@ def circulation_accept():
     mincircs = int(request.form.get("mincircs"))
     maxcircs = request.form.get("maxcircs")
     lostbooks = request.form.get("lostbooks")
-    data = read_excel(report, sheet_name=0)
-    moreData = read_excel(secondReport, sheet_name=0)["Circs"]
+    data = pd.read_excel(report, sheet_name=0)
+    moreData = pd.read_excel(secondReport, sheet_name=0)["Circs"]
     sort = request.form.get("sort")
     secondSort = request.form.get("secondSort")
     sortOrder = request.form.get("sortOrder")
@@ -47,7 +47,7 @@ def circulation_accept():
     maxdate = (request.form.get("maxdate"))
     title = (request.form.get("title"))
 
-    concat([data, moreData], axis='columns')
+    data.insert(loc=9, column="Recent Circs", value=moreData)
 
     filtered = data[mincircs <= data["Circs"]]
     try:

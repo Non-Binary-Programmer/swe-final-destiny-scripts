@@ -39,6 +39,7 @@
             <option value="Year">Year published (only works if Destiny is set to show year published)</option>
             <option value="Date Acquired">Date acquired</option>
             <option value="Circs">Number of circulations</option>
+            <option value="Recent Circs">Number of recent circulations</option>
         </select>
         <select id="sortOrder" name="sortOrder" required>
             <option value="ascending">Ascending</option>
@@ -53,6 +54,7 @@
             <option value="Year">Year published (only works if Destiny is set to show year published)</option>
             <option value="Date Acquired">Date acquired</option>
             <option value="Circs">Number of circulations</option>
+            <option value="Recent Circs">Number of recent circulations</option>
         </select>
         <select id="secondSortOrder" name="secondSortOrder" required>
             <option value="ascending">Ascending</option>
@@ -63,8 +65,7 @@
 
         <input id="report" name="report" type="file" required>
         <br>
-        <label for="secondReport">Upload an Excel file with the same settings but a different circulation time range</label>
-
+        <label for="secondReport">(Optional) upload an Excel file with the same settings but a more recent circulation time range</label>
         <input id="secondReport" name="secondReport" type="file">
         <br>
         <input type="submit">
