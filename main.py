@@ -2,7 +2,7 @@ from sys import maxsize
 from flask import Flask, render_template, redirect, request, send_file
 from xlsxwriter import Workbook
 import pandas as pd
-from numpy import datetime64, isnat
+import numpy as np
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
@@ -38,7 +38,6 @@ def circulation_accept():
     maxcircs = request.form.get("maxcircs")
     lostbooks = request.form.get("lostbooks")
     data = pd.read_excel(report, sheet_name=0)
-    moreData = pd.read_excel(secondReport, sheet_name=0)["Circs"]
     sort = request.form.get("sort")
     secondSort = request.form.get("secondSort")
     sortOrder = request.form.get("sortOrder")
@@ -47,7 +46,9 @@ def circulation_accept():
     maxdate = (request.form.get("maxdate"))
     title = (request.form.get("title"))
 
-    data.insert(loc=9, column="Recent Circs", value=moreData)
+    if (secondReport.content_length != 0):
+        moreData = pd.read_excel(secondReport, sheet_name=0)["Circs"]
+        data.insert(loc=9, column="Recent Circs", value=moreData)
 
     filtered = data[mincircs <= data["Circs"]]
     try:
@@ -66,7 +67,18 @@ def circulation_accept():
         filtered = filtered[filtered["Status"] != "Lost"]
     elif lostbooks == "only":
         filtered = filtered[filtered["Status"] == "Lost"]
+
+    if ("Year" in filtered.columns):
+        filtered["Year"] = filtered["Year"].fillna(-1).astype(int).replace(-1, "")
+    filtered["Date Acquired"] = filtered["Date Acquired"].dt.date
+    filtered["Sublocation"] = filtered["Sublocation"].fillna("")
+    filtered["Author"] = filtered["Author"].fillna("")
+    filtered["Barcode"] = filtered["Barcode"].fillna("")
+    
+    if (sort not in filtered.columns or secondSort not in filtered.columns):
+        return render_template("report template.html", table="", title="Error: tried to sort by data not provided.")
     filtered.sort_values(by=[sort, secondSort], inplace=True, ascending=[sortOrder == "ascending", secondSortOrder == "ascending"])
+    
     return render_template("report template.html", table=filtered.to_html(index=False), title=title) 
 
 @app.route('/barcodes')
