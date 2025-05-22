@@ -15,3 +15,8 @@ a {
 a:visited {
     color:brown
 }
+
+.arialed {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}

@@ -46,7 +46,7 @@ def circulation_accept():
     maxdate = (request.form.get("maxdate"))
     title = (request.form.get("title"))
 
-    if (secondReport.content_length != 0):
+    if (secondReport.read1()):
         moreData = pd.read_excel(secondReport, sheet_name=0)["Circs"]
         data.insert(loc=9, column="Recent Circs", value=moreData)
 
@@ -76,6 +76,7 @@ def circulation_accept():
     filtered["Barcode"] = filtered["Barcode"].fillna("")
     
     if (sort not in filtered.columns or secondSort not in filtered.columns):
+        raise RuntimeError
         return render_template("report template.html", table="", title="Error: tried to sort by data not provided.")
     filtered.sort_values(by=[sort, secondSort], inplace=True, ascending=[sortOrder == "ascending", secondSortOrder == "ascending"])
     
