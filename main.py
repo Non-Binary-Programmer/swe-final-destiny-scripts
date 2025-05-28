@@ -92,14 +92,18 @@ def barcode_accept():
     isUsed = reportString.split()[0] == "Used"
     availableNums = list()
     requiredNumbers = request.form.get("count", default=maxsize)
+    end = int(request.form.get("end"))
+    if end > 9999999:
+        end = 9999999
     if requiredNumbers == "":
         requiredNumbers = maxsize
     else:
         requiredNumbers = int(requiredNumbers)
     if isUsed:
-        availableNums.extend(range(int(request.form.get('start')), int(request.form.get('end'))))
+        availableNums.extend(range(int(request.form.get('start')), end))
     foundNums = 0
     for string in reportString.split('\n'):
+        print(foundNums)
         if not string.startswith('T'):
             continue
         if string.find('-') == -1:
