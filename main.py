@@ -98,27 +98,31 @@ def barcode_accept():
         requiredNumbers = int(requiredNumbers)
     if isUsed:
         availableNums.extend(range(int(request.form.get('start')), int(request.form.get('end'))))
+    foundNums = 0
     for string in reportString.split('\n'):
         if not string.startswith('T'):
             continue
         if string.find('-') == -1:
             if isUsed:
+                val = int(string.split()[1])
                 if (int(string.split()[1]) in availableNums):
                     availableNums.remove(int(string.split()[1]))
+                foundNums += 1
+                if foundNums > requiredNumbers:
+                    break
             else:
                 availableNums.append(int(string.split()[1]))
-                if (len(availableNums) > requiredNumbers):
-                    break
         else:
             valueRange = range(int(string.split()[1]), int(string.split()[4]) + 1)
             if isUsed:
                 for i in valueRange:
                     if (i in availableNums):
                         availableNums.remove(i)
+                foundNums += len(valueRange)
+                if foundNums > requiredNumbers:
+                    break
             else:
                 availableNums.extend(valueRange)
-                if (len(availableNums) > requiredNumbers):
-                    break
     if (len(availableNums) > requiredNumbers):
         availableNums = availableNums[:requiredNumbers]
     wb = Workbook('/tmp/barcodes.xlsx')
