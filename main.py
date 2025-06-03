@@ -103,7 +103,6 @@ def barcode_accept():
         availableNums.extend(range(int(request.form.get('start')), end))
     foundNums = 0
     for string in reportString.split('\n'):
-        print(foundNums)
         if not string.startswith('T'):
             continue
         if string.find('-') == -1:
